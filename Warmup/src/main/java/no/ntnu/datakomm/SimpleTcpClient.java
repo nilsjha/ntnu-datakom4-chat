@@ -144,10 +144,15 @@ public class SimpleTcpClient
                 // * Internet connection lost, timeout in transmission
                 // * Connection not opened.
                 // * What is the request is null or empty?
-                String requestToTransmit = request;
-                Socket s = new Socket();
-                
-                return false;
+                output.println(request);
+                try {
+                        String serverResponse = input.readLine();
+                        return true;
+                } catch (IOException e) {
+                        e.printStackTrace();
+                        return false;
+                }
+        
         }
         
         /**
