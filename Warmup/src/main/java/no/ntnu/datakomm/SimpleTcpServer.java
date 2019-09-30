@@ -15,8 +15,6 @@ public class SimpleTcpServer
         private static final int PORT = 1301;
         private ServerSocket serverSocket;
         private Socket clientSocket;
-        // private PrintWriter output;
-        // private BufferedReader input;
         private boolean keepRunning = true;
         
         public static void main(String[] args) {
