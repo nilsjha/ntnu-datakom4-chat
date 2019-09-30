@@ -106,7 +106,14 @@ public class SimpleTcpClient
          * @return True on success, false otherwise
          */
         private boolean closeConnection() {
-                return false;
+                try {
+                        clientSocket.close();
+                        if (clientSocket.isClosed()) return true;
+                        else return false;
+                } catch (IOException e) {
+                        e.printStackTrace();
+                        return false;
+                }
         }
         
         /**
