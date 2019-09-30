@@ -144,12 +144,10 @@ public class SimpleTcpClient
                 // * Internet connection lost, timeout in transmission
                 // * Connection not opened.
                 // * What is the request is null or empty?
-                output.println(request);
-                try {
-                        String serverResponse = input.readLine();
+                if (request !=null && !request.isEmpty()) {
+                        output.println(request);
                         return true;
-                } catch (IOException e) {
-                        e.printStackTrace();
+                } else {
                         return false;
                 }
         
@@ -163,6 +161,11 @@ public class SimpleTcpClient
          */
         private String readResponseFromServer() {
                 // TODO - implement this method
+                try {
+                        String serverResponse = input.readLine();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
                 // Similarly to other methods, exception can happen while trying to read the input stream of the TCP Socket
                 return null;
         }
