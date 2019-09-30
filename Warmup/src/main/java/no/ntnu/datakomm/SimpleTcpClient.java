@@ -1,8 +1,6 @@
 package no.ntnu.datakomm;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -15,6 +13,8 @@ public class SimpleTcpClient
         // TCP port
         private static final int PORT = 1301;
         private Socket clientSocket;
+        private PrintWriter output;
+        private BufferedReader input;
         
         /**
          * Run the TCP Client.
