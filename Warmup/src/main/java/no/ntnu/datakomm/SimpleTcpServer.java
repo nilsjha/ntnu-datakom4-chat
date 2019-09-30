@@ -50,6 +50,7 @@ public class SimpleTcpServer
                                         }
                                         else {
                                                 System.out.println("[SERVER]: Not according to spec,closing connection");
+                                                output.println("error");
                                                 serverSocket.close();
                                         }
                                 } else {
