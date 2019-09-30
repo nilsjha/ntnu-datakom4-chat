@@ -45,12 +45,12 @@ public class SimpleTcpServer
                                 output = new PrintWriter(clientSocket.getOutputStream(), true);
                                 String clientData = input.readLine();
                                 if (clientData !=null) {
-                                        if (clientData.matches("hey%")) {
-                                                output.println("yo client");
+                                        if (clientData.matches("9+2\n")) {
+                                                output.println("10");
                                         }
                                         else {
-                                                System.out.println("Something is wrong, bye!");
-                                                keepRunning = false;
+                                                System.out.println("[SERVER]: Not according to spec,closing connection");
+                                                serverSocket.close();
                                         }
                                 } else {
                                         System.out.println("[SERVER]: Received null, killing!");
