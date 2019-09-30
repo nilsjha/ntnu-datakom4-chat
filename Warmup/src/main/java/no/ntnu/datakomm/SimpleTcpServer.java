@@ -1,6 +1,8 @@
 package no.ntnu.datakomm;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -35,7 +37,31 @@ public class SimpleTcpServer
         
         public void run() {
                 while (keepRunning) {
-                
+                        try {
+                                serverSocket = new ServerSocket(PORT);
+                                System.out.println("[SERVER]: Listening for connections on " + PORT);
+                                clientSocket = serverSocket.accept();
+                                input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                                output = new PrintWriter(clientSocket.getOutputStream(), true);
+                                String clientData = input.readLine();
+                                if (clientData !=null) {
+                                        if (clientData.matches("hey%")) {
+                                                output.println("yo client");
+                                        }
+                                        else {
+                                                output.println("Something is wrong, bye!");
+                                                keepRunning = false;
+                                        }
+                                } else {
+                                        System.out.println("[SERVER]: Received null, killing!");
+                                        keepRunning = false;
+                                }
+                                
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
+        
+        
                 }
         }
 }
