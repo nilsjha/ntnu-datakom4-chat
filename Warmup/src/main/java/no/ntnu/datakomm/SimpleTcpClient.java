@@ -163,10 +163,13 @@ public class SimpleTcpClient
                 // TODO - implement this method
                 try {
                         String serverResponse = input.readLine();
+                        if (serverResponse !=null) {
+                                return serverResponse;
+                        }
                 } catch (IOException e) {
                         e.printStackTrace();
+                        return null;
                 }
                 // Similarly to other methods, exception can happen while trying to read the input stream of the TCP Socket
-                return null;
         }
 }
