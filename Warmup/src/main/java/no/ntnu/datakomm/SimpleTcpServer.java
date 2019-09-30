@@ -49,7 +49,7 @@ public class SimpleTcpServer
                                                 output.println("yo client");
                                         }
                                         else {
-                                                output.println("Something is wrong, bye!");
+                                                System.out.println("Something is wrong, bye!");
                                                 keepRunning = false;
                                         }
                                 } else {
