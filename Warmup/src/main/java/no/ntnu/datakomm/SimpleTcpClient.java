@@ -108,12 +108,11 @@ public class SimpleTcpClient
         private boolean closeConnection() {
                 try {
                         clientSocket.close();
-                        if (clientSocket.isClosed()) return true;
-                        else return false;
                 } catch (IOException e) {
                         e.printStackTrace();
-                        return false;
                 }
+                if (clientSocket.isClosed()) return true;
+                else return false;
         }
         
         /**
@@ -151,7 +150,7 @@ public class SimpleTcpClient
                 // * Internet connection lost, timeout in transmission
                 // * Connection not opened.
                 // * What is the request is null or empty?
-                if (request !=null && !request.isEmpty()) {
+                if (request !=null || !request.isEmpty()) {
                         output.println(request);
                         return true;
                 } else {
