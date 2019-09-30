@@ -45,10 +45,7 @@ public class SimpleTcpServer
                                 output = new PrintWriter(clientSocket.getOutputStream(), true);
                                 String clientData = input.readLine();
                                 System.out.print("[SERVER]: Data " + clientData + " received! - ");
-                                switch (clientData) {
-                                
-                                }
-                                if (clientData !=null) {
+                                if ((clientData != null)) {
                                         if (clientData.matches("game over\n")) {
                                                 System.out.println("Killin!!!");
                                                 clientSocket.close();
