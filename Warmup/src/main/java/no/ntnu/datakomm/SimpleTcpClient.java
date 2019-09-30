@@ -150,7 +150,7 @@ public class SimpleTcpClient
                 } else {
                         return false;
                 }
-        
+                
         }
         
         /**
@@ -161,11 +161,13 @@ public class SimpleTcpClient
          */
         private String readResponseFromServer() {
                 // TODO - implement this method
+                String serverResponse = null;
                 try {
-                        String serverResponse = input.readLine();
+                        serverResponse = input.readLine();
                         if (serverResponse !=null) {
                                 return serverResponse;
-                        }
+                        } else serverResponse = null;
+                        return null;
                 } catch (IOException e) {
                         e.printStackTrace();
                         return null;
