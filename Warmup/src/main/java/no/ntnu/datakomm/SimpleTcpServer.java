@@ -15,8 +15,8 @@ public class SimpleTcpServer
         private static final int PORT = 1301;
         private ServerSocket serverSocket;
         private Socket clientSocket;
-        private PrintWriter output;
-        private BufferedReader input;
+        // private PrintWriter output;
+        // private BufferedReader input;
         private boolean keepRunning = true;
         
         public static void main(String[] args) {
@@ -39,14 +39,17 @@ public class SimpleTcpServer
                 try {
                         serverSocket = new ServerSocket(PORT);
                         System.out.println("[SERVER]: Listening for connections on " + PORT);
+                        clientSocket = serverSocket.accept();
                         while (keepRunning) {
-                                clientSocket = serverSocket.accept();
-                                input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                                output = new PrintWriter(clientSocket.getOutputStream(), true);
+                                if (clientSocket.isClosed() || clientSocket.equals(null)) {
+                                        clientSocket = serverSocket.accept();
+                                }
+                                BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                                PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
                                 String clientData = input.readLine();
                                 System.out.print("[SERVER]: Data " + clientData + " received! - ");
                                 if ((clientData != null)) {
-                                        if (clientData.matches("game over\n")) {
+                                        if (clientData.matches("game over")) {
                                                 System.out.println("Killin!!!");
                                                 clientSocket.close();
                                         }
@@ -62,6 +65,8 @@ public class SimpleTcpServer
                                         }
                                 } else {
                                         System.out.println("[SERVER]: Received null, killing!");
+                                        clientSocket.close();
+                                        serverSocket.close();
                                         keepRunning = false;
                                 }
                         }
