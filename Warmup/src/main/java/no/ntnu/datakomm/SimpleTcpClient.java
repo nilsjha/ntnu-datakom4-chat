@@ -150,12 +150,15 @@ public class SimpleTcpClient
                 // * Internet connection lost, timeout in transmission
                 // * Connection not opened.
                 // * What is the request is null or empty?
-                if (request !=null || !request.isEmpty()) {
-                        output.println(request);
-                        return true;
-                } else {
-                        return false;
+                boolean clearToTransmit = false;
+                if (request == null) {
                 }
+                else if (request.equals("")) {
+                        System.out.println("[CLIENT]: Request is blank");
+                }
+                else if (clientSocket.isClosed() == false) clearToTransmit = true;
+                if (clearToTransmit) output.println(request);
+                return clearToTransmit;
                 
         }
         
