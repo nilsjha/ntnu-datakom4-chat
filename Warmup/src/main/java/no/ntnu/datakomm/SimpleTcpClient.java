@@ -109,10 +109,11 @@ public class SimpleTcpClient {
                 // Establish connection
                 Socket s = new Socket(host, port);
                 System.out.println("[CLIENT]: Connection established.");
+                return true;
             } catch (IOException e) {
                 System.out.println("[CLIENT]: Socket error:" + e.getMessage());
+                return false;
             }
-        return false;
     }
 
     /**
