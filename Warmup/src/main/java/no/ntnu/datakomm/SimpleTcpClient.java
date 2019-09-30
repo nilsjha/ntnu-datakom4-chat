@@ -1,6 +1,8 @@
 package no.ntnu.datakomm;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 /**
@@ -11,6 +13,7 @@ public class SimpleTcpClient {
     private static final String HOST = "localhost";
     // TCP port
     private static final int PORT = 1301;
+    private Socket clientSocket;
 
     /**
      * Run the TCP Client.
@@ -129,6 +132,9 @@ public class SimpleTcpClient {
         // * Internet connection lost, timeout in transmission
         // * Connection not opened.
         // * What is the request is null or empty?
+        String requestToTransmit = request;
+        Socket s = new Socket();
+
         return false;
     }
 
