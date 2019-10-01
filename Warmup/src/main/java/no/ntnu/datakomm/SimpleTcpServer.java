@@ -38,12 +38,20 @@ public class SimpleTcpServer
                         serverSocket = new ServerSocket(PORT);
                         System.out.println("[SERVER]: Listening for connections on " + PORT);
                         while (keepRunning) {
-                                if (clientSocket.isClosed() || clientSocket.equals(null)) {
-                                        clientSocket = serverSocket.accept();
-                                }
-                                clientSocket = serverSocket.accept();
+                                // Accept new client connections
+                                Socket clientSocket = serverSocket.accept();
+                                
                                 ConnectionBroker connectionBroker = new ConnectionBroker(clientSocket);
+                                System.out.println("[SERVER]: Handling new connection to broker"
+                                        + connectionBroker.getId());
+                                connectionBroker.start();
+                                System.out.println("[SERVER]: ConnectionBroker " + connectionBroker.getId()
+                                 + " from " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
                         }
+                        
+                        // close the server listening socket when shutdown
+                        serverSocket.close();
+                        
                 } catch (IOException e) {
                         e.printStackTrace();
                 }
