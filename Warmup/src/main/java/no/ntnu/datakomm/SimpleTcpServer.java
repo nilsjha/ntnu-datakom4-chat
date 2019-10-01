@@ -37,36 +37,12 @@ public class SimpleTcpServer
                 try {
                         serverSocket = new ServerSocket(PORT);
                         System.out.println("[SERVER]: Listening for connections on " + PORT);
-                        clientSocket = serverSocket.accept();
                         while (keepRunning) {
                                 if (clientSocket.isClosed() || clientSocket.equals(null)) {
                                         clientSocket = serverSocket.accept();
                                 }
-                                BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                                PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
-                                String clientData = input.readLine();
-                                System.out.print("[SERVER]: Data " + clientData + " received! - ");
-                                if ((clientData != null)) {
-                                        if (clientData.matches("game over")) {
-                                                System.out.println("Killin!!!");
-                                                clientSocket.close();
-                                        }
-                                        else if (clientData.matches("[0-9]\\+[0-9]")) {
-                                                System.out.print("Calculating reply...");
-                                                String calculatedResult = "10";
-                                                System.out.println(calculatedResult);
-                                                output.println(calculatedResult.toString()+"\n");
-                                        }
-                                        else {
-                                                System.out.println(" Unknown request");
-                                                output.println("error");
-                                        }
-                                } else {
-                                        System.out.println("[SERVER]: Received null, killing!");
-                                        clientSocket.close();
-                                        serverSocket.close();
-                                        keepRunning = false;
-                                }
+                                clientSocket = serverSocket.accept();
+                                ConnectionBroker connectionBroker = new ConnectionBroker(clientSocket);
                         }
                 } catch (IOException e) {
                         e.printStackTrace();
