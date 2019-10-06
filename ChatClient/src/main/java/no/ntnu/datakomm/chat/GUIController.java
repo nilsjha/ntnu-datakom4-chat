@@ -74,8 +74,7 @@ public class GUIController implements ChatListener {
         tcpClient = new TCPClient();
         hostInput.setText("datakomm.work");
         portInput.setText("1300");
-        textOutput.heightProperty().addListener((observable, oldValue, newValue)
-                -> outputScroll.setVvalue(1.0));
+        textOutput.heightProperty().addListener((observable, oldValue, newValue) -> outputScroll.setVvalue(1.0));
         setKeyAndClickListeners();
     }
 
@@ -83,7 +82,8 @@ public class GUIController implements ChatListener {
      * Initialize handling for all GUI events: clicking on buttons, and key presses
      */
     private void setKeyAndClickListeners() {
-        connectBtn.setOnMouseClicked(event -> {
+        connectBtn.setOnMouseClicked(event ->
+        {
             // Mouse clicked on "Connect" button
             if (tcpClient.isConnectionActive()) {
                 tcpClient.disconnect();
@@ -92,12 +92,14 @@ public class GUIController implements ChatListener {
                 setupConnection(hostInput.getText(), portInput.getText());
             }
         });
-        loginBtn.setOnMouseClicked(event -> {
+        loginBtn.setOnMouseClicked(event ->
+        {
             // Mouse clicked on "Login" button
             tcpClient.tryLogin(loginInput.getText());
             loginInput.setText("");
         });
-        textInput.setOnKeyPressed(event -> {
+        textInput.setOnKeyPressed(event ->
+        {
             if (event.getCode().equals(KeyCode.ENTER) && event.isShiftDown()) {
                 // When Shift+"Enter" is pressed in the message input box: start a new line in the message
                 textInput.setText(textInput.getText() + "\n");
@@ -109,7 +111,8 @@ public class GUIController implements ChatListener {
                 event.consume(); // This is needed to disable beeping sound
             }
         });
-        submitBtn.setOnMouseClicked(event -> {
+        submitBtn.setOnMouseClicked(event ->
+        {
             // Mouse clicked on "Submit" button
             inputSubmit();
             textInput.requestFocus();
@@ -154,7 +157,7 @@ public class GUIController implements ChatListener {
      * @param warning When true, this message is a warning that must be displayed to the user
      */
     private void addMsgToGui(boolean local, TextMessage msg, boolean warning) {
-        // Create GUI elements, set their text and style according to what 
+        // Create GUI elements, set their text and style according to what
         // type of message this is
 
         HBox message = new HBox();
@@ -221,7 +224,8 @@ public class GUIController implements ChatListener {
         connectBtn.setDisable(true);
 
         // Run the connection in a new background thread to avoid GUI freeze
-        Thread connThread = new Thread(() -> {
+        Thread connThread = new Thread(() ->
+        {
             boolean connected = tcpClient.connect(host, Integer.parseInt(port));
             if (connected) {
                 // Connection established, start listening processes
@@ -252,11 +256,12 @@ public class GUIController implements ChatListener {
             connBtnText = "Connect";
         }
         // Make sure this will be executed on GUI thread
-        Platform.runLater(() -> {
+        Platform.runLater(() ->
+        {
             // Update button texts
             serverStatus.setText(status);
             connectBtn.setText(connBtnText);
-            // Connection button was disabled while connection was in progress, 
+            // Connection button was disabled while connection was in progress,
             // now we enable it
             connectBtn.setDisable(false);
 
@@ -269,7 +274,7 @@ public class GUIController implements ChatListener {
     }
 
     ///////////////////////////////////////////////////////////////////////
-    // The methods below are called by the associated TcpClient (facade 
+    // The methods below are called by the associated TcpClient (facade
     // object) in another background thread when messages are received
     // from the server.
     ///////////////////////////////////////////////////////////////////////
@@ -281,13 +286,13 @@ public class GUIController implements ChatListener {
         // Make sure we have just one polling thread, not duplicates
         if (userPollThread == null) {
 
-            userPollThread = new Thread(() -> {
+            userPollThread = new Thread(() ->
+            {
                 ////////////////////////////////////////////////////////////////
                 // This block of code will run in the polling thread
                 ////////////////////////////////////////////////////////////////
                 long threadId = Thread.currentThread().getId();
-                System.out.println("Started user polling in Thread "
-                        + threadId);
+                System.out.println("Started user polling in Thread " + threadId);
                 while (tcpClient.isConnectionActive()) {
                     // TcpClient will ask server to send the latest user list. The response from the server will
                     // not be handled here! Here we only ask for update and go to sleep. Then repeat.
@@ -322,7 +327,8 @@ public class GUIController implements ChatListener {
     @Override
     public void onLoginResult(boolean success, String errMsg) {
         // Update the GUI. Do it on the GUI thread with Platform.runLater()
-        Platform.runLater(() -> {
+        Platform.runLater(() ->
+        {
             if (success) {
                 serverStatus.setText("Server - login successful");
             } else {
@@ -352,8 +358,7 @@ public class GUIController implements ChatListener {
     @Override
     public void onMessageError(String errMsg) {
         // Show error message in the GUI. Do it on the GUI thread.
-        Platform.runLater(() -> addMsgToGui(true, new TextMessage("err", false,
-                "Error: " + errMsg), true));
+        Platform.runLater(() -> addMsgToGui(true, new TextMessage("err", false, "Error: " + errMsg), true));
     }
 
     /**
@@ -365,13 +370,15 @@ public class GUIController implements ChatListener {
     @Override
     public void onUserList(String[] usernames) {
         // Update the user list. Do it on the GUI thread.
-        Platform.runLater(() -> {
+        Platform.runLater(() ->
+        {
             userList.getChildren().clear();
             for (String user : usernames) {
                 Label text = new Label(user);
                 text.getStyleClass().add("user");
                 // Set an "on-click" listener for the item in the user list - allow to send a private message
-                text.setOnMouseClicked(event -> {
+                text.setOnMouseClicked(event ->
+                {
                     textInput.setText("/privmsg " + user + " ");
                     textInput.requestFocus();
                     textInput.end();
@@ -390,16 +397,14 @@ public class GUIController implements ChatListener {
     @Override
     public void onSupportedCommands(String[] commands) {
         // Show the commands in the GUI. Do it on the GUI thread.
-        Platform.runLater(() -> {
-            StringBuilder listOfCommands = new StringBuilder(
-                    "Commands available: ");
+        Platform.runLater(() ->
+        {
+            StringBuilder listOfCommands = new StringBuilder("Commands available: ");
             for (String c : commands) {
                 listOfCommands.append(c).append(" ");
             }
-            listOfCommands.append(
-                    "\nNB! These are chat protocol commands and won't work by just typing them");
-            addMsgToGui(true, new TextMessage("info", false, "Info: "
-                    + listOfCommands.toString()), true);
+            listOfCommands.append("\nNB! These are chat protocol commands and won't work by just typing them");
+            addMsgToGui(true, new TextMessage("info", false, "Info: " + listOfCommands.toString()), true);
         });
     }
 
@@ -411,7 +416,8 @@ public class GUIController implements ChatListener {
     @Override
     public void onCommandError(String errMsg) {
         // Shoe error message. Do it on the GUI thread.
-        Platform.runLater(() -> {
+        Platform.runLater(() ->
+        {
             TextMessage msg = new TextMessage("err", false, "Error: " + errMsg);
             addMsgToGui(true, msg, true);
         });
