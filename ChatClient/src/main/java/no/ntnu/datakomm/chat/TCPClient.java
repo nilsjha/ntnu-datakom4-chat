@@ -83,13 +83,16 @@ public class TCPClient {
         else if (cmd.equals(""));
         else if (connection.isClosed() == false) {
             // matches only if command+space+argument"
-            if(cmd.matches("^\\w+\\s(\\w+)(.+)")) {
-                clearToTransmit = true;
-            }
+            // if(cmd.matches("^\\w+\\s(\\w+)(.+)")) {
+            //    clearToTransmit = true;
+            // }
+            clearToTransmit = true;
         }
         // Transmit only if message the above conditions are valid
-        if (clearToTransmit) toServer.println(cmd);
-        System.out.println("[PWRITR-" + connection.hashCode() + "]: TX:" + cmd);
+        if (clearToTransmit) {
+            toServer.println(cmd);
+            System.out.println("[PWRITR-" + connection.hashCode() + "]: TX:" + cmd);
+        }
         return clearToTransmit;
     }
     
@@ -146,6 +149,7 @@ public class TCPClient {
         // Hint: Use Wireshark and the provided chat client reference app to find out what commands the
         // client and server exchange for user listing.
         // note to self: TX users | RX users, space sepratated
+        sendCommand("users");
     }
     
     /**
