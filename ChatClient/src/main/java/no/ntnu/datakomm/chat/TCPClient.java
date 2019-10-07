@@ -113,7 +113,7 @@ public class TCPClient {
     public void tryLogin(String username) {
         // TODO Step 3: implement this method
         // Hint: Reuse sendCommand() method
-        boolean readyToLogon = false;
+        boolean readyToLogon = true;
         if (username == null) {
             lastError = "username is null, ignoring";
             readyToLogon = false;
@@ -167,10 +167,24 @@ public class TCPClient {
      */
     private String waitServerResponse() {
         // TODO Step 3: Implement this method
+        String serverResponse = null;
+        try {
+            // Try to read the BufferedReader from the server
+            serverResponse = fromServer.readLine();
+            if (serverResponse != null) {
+                return serverResponse;
+            } else {
+                serverResponse = null;
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
         // TODO Step 4: If you get I/O Exception or null from the stream, it means that something has gone wrong
         // with the stream and hence the socket. Probably a good idea to close the socket in that case.
         
-        return null;
     }
     
     /**
