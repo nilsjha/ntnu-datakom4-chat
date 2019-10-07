@@ -225,6 +225,17 @@ public class TCPClient {
             // Hint: In Step 3 you need to handle only login-related responses.
             // Hint: In Step 3 reuse onLoginResult() method
             
+            if (waitServerResponse() != null) {
+                String result = waitServerResponse();
+                if (result.equals("loginok")) {
+                    onLoginResult(true,null);
+                }
+                else if (result.matches("^loginerr\\s(\\w+)(.+)")) {
+                    String errMsg =
+                    onLoginResult(false, );
+                }
+            }
+            
             // TODO Step 5: update this method, handle user-list response from the server
             // Hint: In Step 5 reuse onUserList() method
             
