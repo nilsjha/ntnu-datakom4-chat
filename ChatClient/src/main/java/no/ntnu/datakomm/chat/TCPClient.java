@@ -237,9 +237,11 @@ public class TCPClient {
                 switch(result[0]) {
                     case "loginok":
                         onLoginResult(true,null);
+                        System.out.println("[CLIENT]: Logon succeeded as");
                         break;
                     case "loginerr":
                         onLoginResult(false,result[1]);
+                        System.out.println("[CLIENT]: Logon failed: " + result[1]);
                         break;
                 }
             }
