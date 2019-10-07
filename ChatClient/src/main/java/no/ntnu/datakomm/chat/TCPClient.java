@@ -32,8 +32,12 @@ public class TCPClient {
                 "Established " + connection.getInetAddress() + ":" + connection.getPort() + ", srcPort:" + connection.getLocalPort());
             return true;
         } catch (IOException e) {
-            System.out.println("[CONNER-" + connection.hashCode() + "]: " +
-                "Socket error:" + e.getMessage());
+            if (connection == null) {
+                System.out.println("[CONNER-NULLSOCKET]: Socket error:" + e.getMessage());
+            } else {
+                System.out.println("[CONNER-" + connection.hashCode() + "]: " +
+                    "Socket error:" + e.getMessage());
+            }
             return false;
         }
     }
