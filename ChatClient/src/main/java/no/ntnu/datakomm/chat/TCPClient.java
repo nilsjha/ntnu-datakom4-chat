@@ -145,6 +145,7 @@ public class TCPClient {
         // TODO Step 5: implement this method
         // Hint: Use Wireshark and the provided chat client reference app to find out what commands the
         // client and server exchange for user listing.
+        // note to self: TX users | RX users, space sepratated
     }
     
     /**
