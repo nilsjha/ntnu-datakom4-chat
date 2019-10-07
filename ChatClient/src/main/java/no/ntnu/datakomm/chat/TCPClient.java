@@ -223,10 +223,17 @@ public class TCPClient {
             // and act on it.
             // Hint: In Step 3 you need to handle only login-related responses.
             // Hint: In Step 3 reuse onLoginResult() method
-            
-            if (waitServerResponse() != null) {
+            String responseFromServer = waitServerResponse();
+            if (responseFromServer == null) {
+            }
+            else {
                 // regex to split command towards two sub array strings
-                String[] result = waitServerResponse().split("^\\w+\\s");
+                String[] result = responseFromServer.split("\\s", 2);
+                System.out.print("[CLIENT]: Parsed command");
+                for (String i : result) {
+                    System.out.print(" [" + i + "]");
+                }
+                System.out.println(".");
                 switch(result[0]) {
                     case "loginok":
                         onLoginResult(true,null);
