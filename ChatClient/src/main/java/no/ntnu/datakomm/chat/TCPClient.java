@@ -171,18 +171,16 @@ public class TCPClient {
         try {
             // Try to read the BufferedReader from the server
             serverResponse = fromServer.readLine();
-            System.out.println("[CLIENT]: RX:" + fromServer.readLine());
             if (serverResponse != null) {
-                return serverResponse;
+                System.out.println("[CLIENT]: RX:" + serverResponse );
             } else {
                 serverResponse = null;
             }
-            return null;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
-        
+        return serverResponse;
+    
         // TODO Step 4: If you get I/O Exception or null from the stream, it means that something has gone wrong
         // with the stream and hence the socket. Probably a good idea to close the socket in that case.
         
