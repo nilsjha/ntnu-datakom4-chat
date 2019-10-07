@@ -177,12 +177,19 @@ public class TCPClient {
             // Try to read the BufferedReader from the server
             serverResponse = fromServer.readLine();
             if (serverResponse != null) {
-                System.out.println("[CLIENT]: RX:" + serverResponse );
+                System.out.println("[CLIENT-" + connection.hashCode()+ "]: " +
+                    "RX:" + serverResponse );
             } else {
                 serverResponse = null;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            // Close the connection & reset the connection state
+            disconnect();
+            System.out.println("[CLIENT-" + connection.hashCode() + "]: " +
+                "Closed=" + connection.isClosed() + " resetting state...");
+            connection = null;
+            
         }
         return serverResponse;
     
