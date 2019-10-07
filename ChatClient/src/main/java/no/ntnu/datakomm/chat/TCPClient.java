@@ -28,10 +28,12 @@ public class TCPClient {
             connection = new Socket(host, port);
             toServer = new PrintWriter(connection.getOutputStream(), true);
             fromServer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            System.out.println("[CLIENT]: Established " + connection.getInetAddress() + ":" + connection.getPort() + ", srcPort:" + connection.getLocalPort());
+            System.out.println("[CONNOK-" + connection.hashCode() + "]: " +
+                "Established " + connection.getInetAddress() + ":" + connection.getPort() + ", srcPort:" + connection.getLocalPort());
             return true;
         } catch (IOException e) {
-            System.out.println("[CLIENT]: Socket error:" + e.getMessage());
+            System.out.println("[CONNER-" + connection.hashCode() + "]: " +
+                "Socket error:" + e.getMessage());
             return false;
         }
     }
@@ -83,7 +85,7 @@ public class TCPClient {
         }
         // Transmit only if message the above conditions are valid
         if (clearToTransmit) toServer.println(cmd);
-        System.out.println("[CLIENT]: TX:" + cmd);
+        System.out.println("[PWRITR-" + connection.hashCode() + "]: TX:" + cmd);
         return clearToTransmit;
     }
     
@@ -177,7 +179,7 @@ public class TCPClient {
             // Try to read the BufferedReader from the server
             serverResponse = fromServer.readLine();
             if (serverResponse != null) {
-                System.out.println("[CLIENT-" + connection.hashCode()+ "]: " +
+                System.out.println("[BUFFRD-" + connection.hashCode()+ "]: " +
                     "RX:" + serverResponse );
             } else {
                 serverResponse = null;
@@ -186,7 +188,7 @@ public class TCPClient {
             // e.printStackTrace();
             // Close the connection & reset the connection state
             disconnect();
-            System.out.println("[CLIENT-" + connection.hashCode() + "]: " +
+            System.out.println("[IOEXCP-" + connection.hashCode() + "]: " +
                 "Closed=" + connection.isClosed() + " resetting state...");
             connection = null;
             
@@ -241,7 +243,8 @@ public class TCPClient {
             else {
                 // regex to split command towards two sub array strings
                 String[] result = responseFromServer.split("\\s", 2);
-                System.out.print("[CLIENT]: Parsed command");
+                System.out.print("[PARSER-" + connection.hashCode() + "]: " +
+                    "Acknowledged command");
                 for (String i : result) {
                     System.out.print(" [" + i + "]");
                 }
@@ -249,11 +252,13 @@ public class TCPClient {
                 switch(result[0]) {
                     case "loginok":
                         onLoginResult(true,null);
-                        System.out.println("[CLIENT]: Logon succeeded as");
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                            "]: Logon succeeded as");
                         break;
                     case "loginerr":
                         onLoginResult(false,result[1]);
-                        System.out.println("[CLIENT]: Logon failed: " + result[1]);
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                            "]: Logon failed: " + result[1]);
                         break;
                 }
             }
