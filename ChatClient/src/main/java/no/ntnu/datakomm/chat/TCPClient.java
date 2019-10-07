@@ -226,13 +226,15 @@ public class TCPClient {
             // Hint: In Step 3 reuse onLoginResult() method
             
             if (waitServerResponse() != null) {
-                String result = waitServerResponse();
-                if (result.equals("loginok")) {
-                    onLoginResult(true,null);
-                }
-                else if (result.matches("^loginerr\\s(\\w+)(.+)")) {
-                    String errMsg =
-                    onLoginResult(false, );
+                // regex to split command towards two sub array strings
+                String[] result = waitServerResponse().split("^\\w+\\s");
+                switch(result[0]) {
+                    case "loginok":
+                        onLoginResult(true,null);
+                        break;
+                    case "loginerr":
+                        onLoginResult(false,result[1]);
+                        break;
                 }
             }
             
