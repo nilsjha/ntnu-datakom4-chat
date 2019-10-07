@@ -278,6 +278,9 @@ public class TCPClient {
                                 responseFromServer.indexOf(" ") +1);
                         String[] userList = userResponse.split("\\s");
                         onUsersList(userList);
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                            "]: Parsed userlist, " + userList.length +
+                            " online.");
                         break;
                         
                         default:
