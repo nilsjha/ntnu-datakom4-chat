@@ -171,6 +171,7 @@ public class TCPClient {
         try {
             // Try to read the BufferedReader from the server
             serverResponse = fromServer.readLine();
+            System.out.println("[CLIENT]: RX:" + fromServer.readLine());
             if (serverResponse != null) {
                 return serverResponse;
             } else {
