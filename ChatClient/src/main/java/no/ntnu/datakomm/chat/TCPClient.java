@@ -113,6 +113,17 @@ public class TCPClient {
     public void tryLogin(String username) {
         // TODO Step 3: implement this method
         // Hint: Reuse sendCommand() method
+        boolean readyToLogon = false;
+        if (username == null) {
+            lastError = "username is null, ignoring";
+            readyToLogon = false;
+        }
+        else if(username.equals("")) {
+            lastError = "username is empty, ignoring";
+            readyToLogon = false;
+        }
+        if (readyToLogon) sendCommand("login " + username);
+        
     }
     
     /**
