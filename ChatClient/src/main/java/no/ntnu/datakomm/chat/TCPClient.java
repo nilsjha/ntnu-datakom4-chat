@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -264,11 +265,23 @@ public class TCPClient {
                         System.out.println("[SWCASE-" + connection.hashCode() +
                             "]: Logon succeeded as");
                         break;
+                        
                     case "loginerr":
                         onLoginResult(false,result[1]);
                         System.out.println("[SWCASE-" + connection.hashCode() +
                             "]: Logon failed: " + result[1]);
                         break;
+                        
+                    case "users":
+                        String userResponse =
+                            responseFromServer.substring(
+                                responseFromServer.indexOf(" ") +1);
+                        String[] userList = userResponse.split("\\s");
+                        onUsersList(userList);
+                        break;
+                        
+                        default:
+                            break;
                 }
             }
             
