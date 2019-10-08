@@ -342,6 +342,14 @@ public class TCPClient {
                             + commandList.length + " supported commands.");
                         break;
                         
+                    case "joke":
+                        onMsgReceived(false,"ServerJoke",
+                            strippedResponse);
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                            "-" + getTimeStamp() + "]: Received a joke:' " +
+                            strippedResponse + "'.");
+                        break;
+                        
                     default:
                             break;
                 }
