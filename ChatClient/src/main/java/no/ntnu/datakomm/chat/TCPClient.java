@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -77,7 +76,6 @@ public class TCPClient {
      * @return true on success, false otherwise
      */
     private boolean sendCommand(String cmd) {
-        // TODO Step 2: Implement this method
         // Hint: Remember to check if connection is active
         boolean clearToTransmit = false;
         if (cmd == null);
@@ -104,7 +102,6 @@ public class TCPClient {
      * @return true if message sent, false on error
      */
     public boolean sendPublicMessage(String message) {
-        // TODO Step 2: implement this method
         // Hint: Reuse sendCommand() method
         // Hint: update lastError if you want to store the reason for the error.
         boolean clearToTransmit = true;
@@ -126,7 +123,6 @@ public class TCPClient {
      * @param username Username to use
      */
     public void tryLogin(String username) {
-        // TODO Step 3: implement this method
         // Hint: Reuse sendCommand() method
         boolean readyToLogon = true;
         if (username == null) {
@@ -146,7 +142,6 @@ public class TCPClient {
      * clear your current user list and use events in the listener.
      */
     public void refreshUserList() {
-        // TODO Step 5: implement this method
         // Hint: Use Wireshark and the provided chat client reference app to find out what commands the
         // client and server exchange for user listing.
         // note to self: TX users | RX users, space sepratated
@@ -183,7 +178,6 @@ public class TCPClient {
      * @return one line of text (one command) received from the server
      */
     private String waitServerResponse() {
-        // TODO Step 3: Implement this method
         String serverResponse = null;
         try {
             // Try to read the BufferedReader from the server
@@ -204,10 +198,6 @@ public class TCPClient {
             
         }
         return serverResponse;
-    
-        // TODO Step 4: If you get I/O Exception or null from the stream, it means that something has gone wrong
-        // with the stream and hence the socket. Probably a good idea to close the socket in that case.
-        
     }
     
     /**
@@ -241,7 +231,6 @@ public class TCPClient {
      */
     private void parseIncomingCommands() {
         while (isConnectionActive()) {
-            // TODO Step 3: Implement this method
             // Hint: Reuse waitServerResponse() method
             // Hint: Have a switch-case (or other way) to check what type of response is received from the server
             // and act on it.
@@ -288,7 +277,6 @@ public class TCPClient {
                 }
             }
             
-            // TODO Step 5: update this method, handle user-list response from the server
             // Hint: In Step 5 reuse onUserList() method
             
             // TODO Step 7: add support for incoming chat messages from other users (types: msg, privmsg)
@@ -345,7 +333,6 @@ public class TCPClient {
      * Internet error)
      */
     private void onDisconnect() {
-        // TODO Step 4: Implement this method
         // Hint: all the onXXX() methods will be similar to onLoginResult()
         for (ChatListener l : listeners) {
             // Notify all ChatListeners
@@ -359,7 +346,6 @@ public class TCPClient {
      * @param users List with usernames
      */
     private void onUsersList(String[] users) {
-        // TODO Step 5: Implement this method
         for (ChatListener l : listeners) {
             l.onUserList(users);
         }
