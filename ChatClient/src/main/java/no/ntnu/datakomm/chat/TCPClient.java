@@ -463,7 +463,6 @@ public class TCPClient {
      * @return the current time
      */
     private String getTimeStamp() {
-        String time = String.valueOf(LocalTime.now());
-        return time;
+        return String.valueOf(LocalTime.now());
     }
 }
