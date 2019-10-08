@@ -1,10 +1,8 @@
 package no.ntnu.datakomm.chat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,8 +25,10 @@ public class TCPClient {
     public boolean connect(String host, int port) {
         try {
             connection = new Socket(host, port);
-            toServer = new PrintWriter(connection.getOutputStream(), true);
-            fromServer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            toServer = new PrintWriter(new OutputStreamWriter(connection.getOutputStream(),
+                StandardCharsets.UTF_8), true);
+            fromServer =
+                new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
             System.out.println("[CONNOK-" + connection.hashCode() +
                 "-" + getTimeStamp() + "]: " +
                 "Established " + connection.getInetAddress() + ":" + connection.getPort() + ", srcPort:" + connection.getLocalPort());
@@ -190,6 +190,14 @@ public class TCPClient {
         sendCommand("help");
     }
     
+    /**
+     *  Send a request for a joke
+     */
+    public void askForJoke() {
+        // Send the joke command
+        sendCommand("joke");
+    }
+    
     
     /**
      * Wait for chat server's response
@@ -332,6 +340,14 @@ public class TCPClient {
                         System.out.println("[SWCASE-" + connection.hashCode() +
                                 "-" + getTimeStamp() + "]: Parsed "
                             + commandList.length + " supported commands.");
+                        break;
+                        
+                    case "joke":
+                        onMsgReceived(false,"ServerJoke",
+                            strippedResponse);
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                            "-" + getTimeStamp() + "]: Received a joke:' " +
+                            strippedResponse + "'.");
                         break;
                         
                     default:
