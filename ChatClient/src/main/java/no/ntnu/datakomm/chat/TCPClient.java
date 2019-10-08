@@ -267,6 +267,11 @@ public class TCPClient {
                     System.out.print(" [" + i + "]");
                 }
                 System.out.println(".");
+                
+                // Strip the response ready for use in cases
+                String strippedResponse = responseFromServer.substring(
+                    responseFromServer.indexOf(" ") +1);
+                
                 switch(result[0]) {
                     case "loginok":
                         onLoginResult(true,null);
@@ -281,10 +286,7 @@ public class TCPClient {
                         break;
                         
                     case "users":
-                        String userResponse =
-                            responseFromServer.substring(
-                                responseFromServer.indexOf(" ") +1);
-                        String[] userList = userResponse.split("\\s");
+                        String[] userList = strippedResponse.split("\\s");
                         onUsersList(userList);
                         System.out.println("[SWCASE-" + connection.hashCode() +
                             "-" + getTimeStamp() + "]: Parsed userlist, " + userList.length +
@@ -292,11 +294,8 @@ public class TCPClient {
                         break;
                         
                     case "msg":
-                        String publicMessageResponse =
-                            responseFromServer.substring(
-                                responseFromServer.indexOf(" ") +1);
                         String[] publicMessage =
-                            publicMessageResponse.split("\\s", 2);
+                            strippedResponse.split("\\s", 2);
                         onMsgReceived(false,publicMessage[0], publicMessage[1]);
                         System.out.println("[SWCASE-" + connection.hashCode() +
                             "-" + getTimeStamp() + "]: Public message " +
@@ -304,11 +303,8 @@ public class TCPClient {
                         break;
     
                     case "privmsg":
-                        String privateMessageResponse =
-                            responseFromServer.substring(
-                                responseFromServer.indexOf(" ") +1);
                         String[] privateMessage =
-                            privateMessageResponse.split("\\s", 2);
+                            strippedResponse.split("\\s", 2);
                         onMsgReceived(true,privateMessage[0], privateMessage[1]);
                         System.out.println("[SWCASE-" + connection.hashCode() +
                             "-" + getTimeStamp() + "]: Private message " +
@@ -316,22 +312,17 @@ public class TCPClient {
                         break;
                         
                     case "msgerr":
-                       String errorMessageResponse = responseFromServer.substring(
-                           responseFromServer.indexOf(" ") +1);
-                       onMsgError(errorMessageResponse);
+                       onMsgError(strippedResponse);
                         System.out.println("[SWCASE-" + connection.hashCode() +
                             "-" + getTimeStamp() + "]: Message error: "
-                            + errorMessageResponse);
+                            + strippedResponse );
                         break;
     
                     case "cmderr":
-                        String commandErrorResponse =
-                            responseFromServer.substring(
-                            responseFromServer.indexOf(" ") +1);
-                        onCmdError(commandErrorResponse);
+                        onCmdError(strippedResponse);
                         System.out.println("[SWCASE-" + connection.hashCode() +
                             "-" + getTimeStamp() + "]: Command error: "
-                            + commandErrorResponse);
+                            + strippedResponse);
                         break;
                     default:
                             break;
