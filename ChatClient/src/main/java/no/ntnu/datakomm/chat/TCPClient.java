@@ -324,6 +324,16 @@ public class TCPClient {
                             "-" + getTimeStamp() + "]: Command error: "
                             + strippedResponse);
                         break;
+                        
+                    case "supported":
+                        String[] commandList = strippedResponse.split(
+                            "\\s");
+                        onSupported(commandList);
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                                "-" + getTimeStamp() + "]: Parsed "
+                            + commandList.length + " supported commands.");
+                        break;
+                        
                     default:
                             break;
                 }
@@ -431,7 +441,6 @@ public class TCPClient {
      * @param commands Commands supported by the server
      */
     private void onSupported(String[] commands) {
-        // TODO Step 8: Implement this method
     }
     
     /**
