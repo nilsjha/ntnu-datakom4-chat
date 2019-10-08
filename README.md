@@ -1,5 +1,5 @@
 # Assignment A4 
-![v1.0.0 client screenshot](Images/clientRunning.jpg)
+![v1.0.0 client screenshot](Images/clientRunning.png)
 _In this assignment we got the task to implement the TCP connection handling
 for a predefined chat application._
 	
