@@ -271,7 +271,7 @@ public class TCPClient {
                     case "loginok":
                         onLoginResult(true,null);
                         System.out.println("[SWCASE-" + connection.hashCode() +
-                            "-" + getTimeStamp() + "]: Logon succeeded as");
+                            "-" + getTimeStamp() + "]: Logon succeeded.");
                         break;
                         
                     case "loginerr":
