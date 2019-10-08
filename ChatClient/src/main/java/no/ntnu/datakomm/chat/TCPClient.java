@@ -165,7 +165,7 @@ public class TCPClient {
             lastError = "Recipent null, ignoring";
             clearToSend = false;
         }
-        if (recipient.equals("")) {
+        else if (recipient.equals("")) {
             lastError = "Recipent empty, ignoring";
             clearToSend = false;
         }
@@ -173,7 +173,7 @@ public class TCPClient {
             lastError = "Message null, ignoring";
             clearToSend = false;
         }
-        if (message.equals("")) {
+        else if (message.equals("")) {
             lastError = "Message empty, ignoring";
             clearToSend = false;
         }
