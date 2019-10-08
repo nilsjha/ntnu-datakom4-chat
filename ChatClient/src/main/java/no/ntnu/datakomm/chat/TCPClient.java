@@ -426,8 +426,9 @@ public class TCPClient {
      * @param text   Message text
      */
     private void onMsgReceived(boolean priv, String sender, String text) {
+        // Replace ASCII-smileys to emojis
+        String converted = replaceToEmoji(text);
         // Create a new message object and notify each listener
-        String converted = EmojiParser.parseToUnicode(text);
         TextMessage message = new TextMessage(sender,priv,converted);
         for (ChatListener l : listeners) l.onMessageReceived(message);
     }
@@ -468,5 +469,28 @@ public class TCPClient {
     private String getTimeStamp() {
         String time = String.valueOf(LocalTime.now());
         return time;
+    }
+    
+    /**
+     *  Replaces supported ASCII-style smiley with emoji
+     * @param input The string to be converted
+     * @return The converted string with emoji
+     */
+    private String replaceToEmoji(String input) {
+        String [][] mapAsciiEmoji = {
+            {":-)", ":blush:"},
+            {":)", ":blush:"},
+            {":-D", ":smile:"},
+            {":D", ":smile:"},
+            {":-(", ":worried:"},
+            {":(", ":worried:"},
+            
+        };
+        String converted = input;
+        for (String[] mapping : mapAsciiEmoji) {
+            converted = converted.replace(mapping[0], mapping[1]);
+        }
+        // Run the external EmojiParser to really convert the mapped values
+        return EmojiParser.parseToUnicode(converted);
     }
 }
