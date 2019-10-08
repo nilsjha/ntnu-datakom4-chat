@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -405,5 +406,14 @@ public class TCPClient {
      */
     private void onSupported(String[] commands) {
         // TODO Step 8: Implement this method
+    }
+    
+    /**
+     *  Returns a string to use as timestamp for current time.
+     * @return the current time
+     */
+    private String getTimeStamp() {
+        String time = String.valueOf(LocalTime.now());
+        return time;
     }
 }
