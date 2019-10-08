@@ -27,6 +27,10 @@ The completed assignment with the mandatory steps have been _tagged_ with __v1.0
  1. Final bugfixes & testing before release
  1. Release v1.0.0 to production
 
+### v1.1.0 - Joke & UTF-8
+ * The client now supports the UTF-8 charset (incl nordic chars)
+ * The /joke command will now work with servers that support this feature.
+
 ## Screenshots
 #### The client GUI
 ![v1.0.0 client](Images/clientRunning.png)
