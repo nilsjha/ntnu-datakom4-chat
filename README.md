@@ -32,7 +32,7 @@ The completed assignment with the mandatory steps have been _tagged_ with __v1.0
  * The /joke command will now work with servers that support this feature.
 
 ## Screenshots
-#### The client GUI
+### The client GUI
 ![v1.0.0 client](Images/clientRunning.png)
 
 _Shows a private meassage exchange_
