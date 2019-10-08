@@ -291,6 +291,18 @@ public class TCPClient {
                             " online.");
                         break;
                         
+                    case "msg":
+                        String publicMessageResponse =
+                            responseFromServer.substring(
+                                responseFromServer.indexOf(" ") +1);
+                        String[] parsedMessage =
+                            publicMessageResponse.split("\\s", 2);
+                        onMsgReceived(false,parsedMessage[0], parsedMessage[1]);
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                            "-" + getTimeStamp() + "]: Parsed public message " +
+                                "from " + parsedMessage[0] + ": '" + parsedMessage[1] +"'.");
+                        break;
+                        
                         default:
                             break;
                 }
