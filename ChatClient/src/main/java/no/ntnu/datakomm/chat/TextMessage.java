@@ -13,8 +13,8 @@ public class TextMessage {
 
     /**
      * @param sender Username of the sender
-     * @param priv When true, message is private
-     * @param text Text of the message
+     * @param priv   When true, message is private
+     * @param text   Text of the message
      */
     public TextMessage(String sender, boolean priv, String text) {
         this.sender = sender;

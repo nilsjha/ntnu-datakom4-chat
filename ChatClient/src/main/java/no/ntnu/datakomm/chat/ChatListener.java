@@ -16,9 +16,9 @@ public interface ChatListener {
      * or failed.
      *
      * @param success when true, the client has logged in, when false, login
-     * failed
-     * @param errMsg Error message in case of failure, or null on successful
-     * login
+     *                failed
+     * @param errMsg  Error message in case of failure, or null on successful
+     *                login
      */
     public void onLoginResult(boolean success, String errMsg);
 
