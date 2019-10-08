@@ -190,6 +190,14 @@ public class TCPClient {
         sendCommand("help");
     }
     
+    /**
+     *  Send a request for a joke
+     */
+    public void askForJoke() {
+        // Send the joke command
+        sendCommand("joke");
+    }
+    
     
     /**
      * Wait for chat server's response
@@ -332,6 +340,14 @@ public class TCPClient {
                         System.out.println("[SWCASE-" + connection.hashCode() +
                                 "-" + getTimeStamp() + "]: Parsed "
                             + commandList.length + " supported commands.");
+                        break;
+                        
+                    case "joke":
+                        onMsgReceived(false,"ServerJoke",
+                            strippedResponse);
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                            "-" + getTimeStamp() + "]: Received a joke:' " +
+                            strippedResponse + "'.");
                         break;
                         
                     default:
