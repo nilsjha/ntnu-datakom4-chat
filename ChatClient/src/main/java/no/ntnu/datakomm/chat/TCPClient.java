@@ -324,6 +324,15 @@ public class TCPClient {
                             + errorMessageResponse);
                         break;
     
+                    case "cmderr":
+                        String commandErrorResponse =
+                            responseFromServer.substring(
+                            responseFromServer.indexOf(" ") +1);
+                        onCmdError(commandErrorResponse);
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                            "-" + getTimeStamp() + "]: Command error: "
+                            + commandErrorResponse);
+                        break;
                     default:
                             break;
                 }
