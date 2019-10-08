@@ -341,9 +341,6 @@ public class TCPClient {
             
             // Hint: In Step 5 reuse onUserList() method
             // Hint for Step 7: call corresponding onXXX() methods which will notify all the listeners
-            
-            // TODO Step 8: add support for incoming supported command list (type: supported)
-            
         }
     }
     
@@ -441,6 +438,8 @@ public class TCPClient {
      * @param commands Commands supported by the server
      */
     private void onSupported(String[] commands) {
+        // Notify listeners with the list of supported commands
+        for (ChatListener l : listeners) l.onSupportedCommands(commands);
     }
     
     /**
