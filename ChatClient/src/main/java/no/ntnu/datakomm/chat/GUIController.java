@@ -129,15 +129,19 @@ public class GUIController implements ChatListener {
         if (!msgToSend.isEmpty()) {
             TextMessage msg;
             if (tcpClient.isConnectionActive()) {
-                // Split the message in max 3 parts. If the first one is "/privmsg", then recipient is the second
-                // part and the text to send is the third. Otherwise, the whole message is sent as a public message.
-                String[] msgParts = msgToSend.split(" ", 3);
-                if (msgParts.length == 3 && msgParts[0].equals("/privmsg")) {
-                    String recipient = msgParts[1];
-                    String message = msgParts[2];
-                    tcpClient.sendPrivateMessage(recipient, message);
+                if (msgToSend.equals("/joke")) {
+                    tcpClient.askForJoke();
                 } else {
-                    tcpClient.sendPublicMessage(msgToSend);
+                    // Split the message in max 3 parts. If the first one is "/privmsg", then recipient is the second
+                    // part and the text to send is the third. Otherwise, the whole message is sent as a public message.
+                    String[] msgParts = msgToSend.split(" ", 3);
+                    if (msgParts.length == 3 && msgParts[0].equals("/privmsg")) {
+                        String recipient = msgParts[1];
+                        String message = msgParts[2];
+                        tcpClient.sendPrivateMessage(recipient, message);
+                    } else {
+                        tcpClient.sendPublicMessage(msgToSend);
+                    }
                 }
                 msg = new TextMessage("", false, msgToSend);
             } else {
