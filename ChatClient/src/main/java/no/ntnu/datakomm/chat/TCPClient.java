@@ -295,15 +295,36 @@ public class TCPClient {
                         String publicMessageResponse =
                             responseFromServer.substring(
                                 responseFromServer.indexOf(" ") +1);
-                        String[] parsedMessage =
+                        String[] publicMessage =
                             publicMessageResponse.split("\\s", 2);
-                        onMsgReceived(false,parsedMessage[0], parsedMessage[1]);
+                        onMsgReceived(false,publicMessage[0], publicMessage[1]);
                         System.out.println("[SWCASE-" + connection.hashCode() +
-                            "-" + getTimeStamp() + "]: Parsed public message " +
-                                "from " + parsedMessage[0] + ": '" + parsedMessage[1] +"'.");
+                            "-" + getTimeStamp() + "]: Public message " +
+                                "from " + publicMessage[0] + ": '" + publicMessage[1] +"'.");
+                        break;
+    
+                    case "privmsg":
+                        String privateMessageResponse =
+                            responseFromServer.substring(
+                                responseFromServer.indexOf(" ") +1);
+                        String[] privateMessage =
+                            privateMessageResponse.split("\\s", 2);
+                        onMsgReceived(true,privateMessage[0], privateMessage[1]);
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                            "-" + getTimeStamp() + "]: Private message " +
+                            "from " + privateMessage[0] + ": '" + privateMessage[1] +"'.");
                         break;
                         
-                        default:
+                    case "msgerr":
+                       String errorMessageResponse = responseFromServer.substring(
+                           responseFromServer.indexOf(" ") +1);
+                       onMsgError(errorMessageResponse);
+                        System.out.println("[SWCASE-" + connection.hashCode() +
+                            "-" + getTimeStamp() + "]: Message error: "
+                            + errorMessageResponse);
+                        break;
+    
+                    default:
                             break;
                 }
             }
