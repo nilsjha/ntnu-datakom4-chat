@@ -1,5 +1,7 @@
 package no.ntnu.datakomm.chat;
 
+import com.vdurmont.emoji.EmojiParser;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -425,7 +427,8 @@ public class TCPClient {
      */
     private void onMsgReceived(boolean priv, String sender, String text) {
         // Create a new message object and notify each listener
-        TextMessage message = new TextMessage(sender,priv,text);
+        String converted = EmojiParser.parseToUnicode(text);
+        TextMessage message = new TextMessage(sender,priv,converted);
         for (ChatListener l : listeners) l.onMessageReceived(message);
     }
     
