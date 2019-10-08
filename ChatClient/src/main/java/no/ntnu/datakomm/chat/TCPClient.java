@@ -339,10 +339,6 @@ public class TCPClient {
             }
             
             // Hint: In Step 5 reuse onUserList() method
-            
-            // TODO Step 7: add support for incoming chat messages from other users (types: msg, privmsg)
-            // TODO Step 7: add support for incoming message errors (type: msgerr)
-            // TODO Step 7: add support for incoming command errors (type: cmderr)
             // Hint for Step 7: call corresponding onXXX() methods which will notify all the listeners
             
             // TODO Step 8: add support for incoming supported command list (type: supported)
@@ -384,9 +380,8 @@ public class TCPClient {
      * @param errMsg  Error message if any
      */
     private void onLoginResult(boolean success, String errMsg) {
-        for (ChatListener l : listeners) {
-            l.onLoginResult(success, errMsg);
-        }
+        // Notify all listeners with login result
+        for (ChatListener l : listeners) l.onLoginResult(success, errMsg);
     }
     
     /**
@@ -394,11 +389,8 @@ public class TCPClient {
      * Internet error)
      */
     private void onDisconnect() {
-        // Hint: all the onXXX() methods will be similar to onLoginResult()
-        for (ChatListener l : listeners) {
-            // Notify all ChatListeners
-            l.onDisconnect();
-        }
+        // Notify all ChatListeners
+        for (ChatListener l : listeners) l.onDisconnect();
     }
     
     /**
@@ -407,9 +399,7 @@ public class TCPClient {
      * @param users List with usernames
      */
     private void onUsersList(String[] users) {
-        for (ChatListener l : listeners) {
-            l.onUserList(users);
-        }
+        for (ChatListener l : listeners) l.onUserList(users);
     }
     
     /**
@@ -422,9 +412,7 @@ public class TCPClient {
     private void onMsgReceived(boolean priv, String sender, String text) {
         // Create a new message object and notify each listener
         TextMessage message = new TextMessage(sender,priv,text);
-        for (ChatListener l : listeners) {
-            l.onMessageReceived(message);
-        }
+        for (ChatListener l : listeners) l.onMessageReceived(message);
     }
     
     /**
