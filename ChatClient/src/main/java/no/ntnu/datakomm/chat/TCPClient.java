@@ -1,5 +1,7 @@
 package no.ntnu.datakomm.chat;
 
+import com.vdurmont.emoji.EmojiParser;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -424,8 +426,10 @@ public class TCPClient {
      * @param text   Message text
      */
     private void onMsgReceived(boolean priv, String sender, String text) {
+        // Replace ASCII-smileys to emojis
+        String converted = replaceToEmoji(text);
         // Create a new message object and notify each listener
-        TextMessage message = new TextMessage(sender,priv,text);
+        TextMessage message = new TextMessage(sender,priv,converted);
         for (ChatListener l : listeners) l.onMessageReceived(message);
     }
     
@@ -464,5 +468,28 @@ public class TCPClient {
      */
     private String getTimeStamp() {
         return String.valueOf(LocalTime.now());
+    }
+    
+    /**
+     *  Replaces supported ASCII-style smiley with emoji
+     * @param input The string to be converted
+     * @return The converted string with emoji
+     */
+    private String replaceToEmoji(String input) {
+        String [][] mapAsciiEmoji = {
+            {":-)", ":blush:"},
+            {":)", ":blush:"},
+            {":-D", ":smile:"},
+            {":D", ":smile:"},
+            {":-(", ":worried:"},
+            {":(", ":worried:"},
+            
+        };
+        String converted = input;
+        for (String[] mapping : mapAsciiEmoji) {
+            converted = converted.replace(mapping[0], mapping[1]);
+        }
+        // Run the external EmojiParser to really convert the mapped values
+        return EmojiParser.parseToUnicode(converted);
     }
 }
