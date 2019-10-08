@@ -420,7 +420,11 @@ public class TCPClient {
      * @param text   Message text
      */
     private void onMsgReceived(boolean priv, String sender, String text) {
-        // TODO Step 7: Implement this method
+        // Create a new message object and notify each listener
+        TextMessage message = new TextMessage(sender,priv,text);
+        for (ChatListener l : listeners) {
+            l.onMessageReceived(message);
+        }
     }
     
     /**
