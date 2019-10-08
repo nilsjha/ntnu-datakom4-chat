@@ -1,18 +1,20 @@
 # Assignment A4 
+![v1.0.0 client screenshot](Images/clientRunning.jpg)
 _In this assignment we got the task to implement the TCP connection handling
 for a predefined chat application._
 	
 __The assignment consists of two parts:__
- 1. [X] - Warmup
- 1. [X] - Server/client-chat appliction
+
+ *  Warmup
+ *  Server/client-chat appliction
 
 ## Notes
 Unfortunatley I ran a rebase of the develop branch, without knowing what
 it really did, so I lost all the __merge__-commits for the _git-flow_ 
 function branches. Luckly no other changes were lost! I have now learned
-the hard way to really read up on what the different commands do. The
-completed assignment with the mandatory steps have been _tagged_ with
-__v1.0.0__.
+the hard way to really read up on what the different commands do.
+
+The completed assignment with the mandatory steps have been _tagged_ with __v1.0.0__.
 ## Release summary
 ### v1.0.0 - Mandatory steps
  1. Connection setup  
