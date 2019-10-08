@@ -28,5 +28,10 @@ The completed assignment with the mandatory steps have been _tagged_ with __v1.0
  1. Release v1.0.0 to production
 
 ## Screenshots
+#### The client GUI
 ![v1.0.0 client](Images/clientRunning.png)
+_Shows a private meassage exchange_
+### The debug terminal
 ![v1.0.0 console](Images/debugTerminal.png)
+_The terminal shows responsible method, socket id, timestamp and debug info_ 
+
