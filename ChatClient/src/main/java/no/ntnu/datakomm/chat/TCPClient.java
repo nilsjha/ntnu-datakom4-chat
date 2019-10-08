@@ -29,14 +29,15 @@ public class TCPClient {
             connection = new Socket(host, port);
             toServer = new PrintWriter(connection.getOutputStream(), true);
             fromServer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            System.out.println("[CONNOK-" + connection.hashCode() + "]: " +
+            System.out.println("[CONNOK-" + connection.hashCode() +
+                "-" + getTimeStamp() + "]: " +
                 "Established " + connection.getInetAddress() + ":" + connection.getPort() + ", srcPort:" + connection.getLocalPort());
             return true;
         } catch (IOException e) {
             if (connection == null) {
-                System.out.println("[CONNER-NULLSOCKET]: Socket error:" + e.getMessage());
+                System.out.println("[CONNER-NULSOCKET-" + getTimeStamp() + "]: Socket error:" + e.getMessage());
             } else {
-                System.out.println("[CONNER-" + connection.hashCode() + "]: " +
+                System.out.println("[CONNER-" + connection.hashCode() + "-" + getTimeStamp() + "]: " +
                     "Socket error:" + e.getMessage());
             }
             return false;
@@ -91,7 +92,7 @@ public class TCPClient {
         // Transmit only if message the above conditions are valid
         if (clearToTransmit) {
             toServer.println(cmd);
-            System.out.println("[PWRITR-" + connection.hashCode() + "]: TX:" + cmd);
+            System.out.println("[PWRITR-" + connection.hashCode() + "-" + getTimeStamp() + "]: TX:" + cmd);
         }
         return clearToTransmit;
     }
@@ -201,7 +202,7 @@ public class TCPClient {
             // Try to read the BufferedReader from the server
             serverResponse = fromServer.readLine();
             if (serverResponse != null) {
-                System.out.println("[BUFFRD-" + connection.hashCode()+ "]: " +
+                System.out.println("[BUFFRD-" + connection.hashCode()+ "-" + getTimeStamp() + "]: " +
                     "RX:" + serverResponse );
             } else {
                 serverResponse = null;
@@ -210,7 +211,7 @@ public class TCPClient {
             // e.printStackTrace();
             // Close the connection & reset the connection state
             disconnect();
-            System.out.println("[IOEXCP-" + connection.hashCode() + "]: " +
+            System.out.println("[IOEXCP-" + connection.hashCode() + "-" + getTimeStamp() + "]: " +
                 "Closed=" + connection.isClosed() + " resetting state...");
             connection = null;
             
@@ -260,8 +261,8 @@ public class TCPClient {
             else {
                 // regex to split command towards two sub array strings
                 String[] result = responseFromServer.split("\\s", 2);
-                System.out.print("[PARSER-" + connection.hashCode() + "]: " +
-                    "Acknowledged command");
+                System.out.print("[PARSER-" + connection.hashCode() + "-"
+                    + getTimeStamp() + "]: " + "Acknowledged command");
                 for (String i : result) {
                     System.out.print(" [" + i + "]");
                 }
@@ -270,13 +271,13 @@ public class TCPClient {
                     case "loginok":
                         onLoginResult(true,null);
                         System.out.println("[SWCASE-" + connection.hashCode() +
-                            "]: Logon succeeded as");
+                            "-" + getTimeStamp() + "]: Logon succeeded as");
                         break;
                         
                     case "loginerr":
                         onLoginResult(false,result[1]);
                         System.out.println("[SWCASE-" + connection.hashCode() +
-                            "]: Logon failed: " + result[1]);
+                            "-" + getTimeStamp() + "]: Logon failed: " + result[1]);
                         break;
                         
                     case "users":
@@ -286,7 +287,7 @@ public class TCPClient {
                         String[] userList = userResponse.split("\\s");
                         onUsersList(userList);
                         System.out.println("[SWCASE-" + connection.hashCode() +
-                            "]: Parsed userlist, " + userList.length +
+                            "-" + getTimeStamp() + "]: Parsed userlist, " + userList.length +
                             " online.");
                         break;
                         
