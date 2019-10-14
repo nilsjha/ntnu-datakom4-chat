@@ -27,6 +27,10 @@ The completed assignment with the mandatory steps have been _tagged_ with __v1.0
  1. Final bugfixes & testing before release
  1. Release v1.0.0 to production
 
+### v1.1.10 - Code cleanup & emoji support
+ * Small fixes for performance & readability in code
+ * Added support for simple emojis parsing & emojicode flags
+
 ## Screenshots
 #### The client GUI
 ![v1.0.0 client](Images/clientRunning.png)
