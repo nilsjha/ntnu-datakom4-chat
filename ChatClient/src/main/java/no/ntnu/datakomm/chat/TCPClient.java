@@ -81,22 +81,15 @@ public class TCPClient {
      */
     private boolean sendCommand(String cmd) {
         // Hint: Remember to check if connection is active
-        boolean clearToTransmit = false;
-        if (cmd == null);
-        else if (cmd.equals(""));
-        else if (connection.isClosed() == false) {
-            // matches only if command+space+argument"
-            // if(cmd.matches("^\\w+\\s(\\w+)(.+)")) {
-            //    clearToTransmit = true;
-            // }
-            clearToTransmit = true;
-        }
-        // Transmit only if message the above conditions are valid
-        if (clearToTransmit) {
+        boolean commandSent = false;
+        if ((cmd == null) || (cmd.isEmpty()) || (connection.isClosed() == false)) {
+        } else {
+            // Transmit only if message the above conditions are valid == FALSE
             toServer.println(cmd);
+            commandSent = true;
             System.out.println("[PWRITR-" + connection.hashCode() + "-" + getTimeStamp() + "]: TX:" + cmd);
         }
-        return clearToTransmit;
+        return commandSent;
     }
     
     /**
@@ -153,12 +146,13 @@ public class TCPClient {
     public boolean sendPrivateMessage(String recipient, String message) {
         // Hint: Reuse sendCommand() method
         // Hint: update lastError if you want to store the reason for the error.
-        boolean clearToSend = true;
+        boolean clearToSend = false;
         if ((recipient == null) || (recipient.isEmpty()) )  {
             lastError = "Recipent null or empty, ignoring";
-            clearToSend = false;
+        } else {
+            sendCommand("privmsg " + recipient + " " + message);
+            clearToSend = true;
         }
-        if (clearToSend) sendCommand("privmsg " + recipient + " " + message);
         return clearToSend;
     }
     
