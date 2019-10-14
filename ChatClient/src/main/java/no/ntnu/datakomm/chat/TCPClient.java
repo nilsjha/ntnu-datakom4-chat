@@ -1,5 +1,7 @@
 package no.ntnu.datakomm.chat;
 
+import com.vdurmont.emoji.EmojiParser;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -79,22 +81,15 @@ public class TCPClient {
      */
     private boolean sendCommand(String cmd) {
         // Hint: Remember to check if connection is active
-        boolean clearToTransmit = false;
-        if (cmd == null);
-        else if (cmd.equals(""));
-        else if (connection.isClosed() == false) {
-            // matches only if command+space+argument"
-            // if(cmd.matches("^\\w+\\s(\\w+)(.+)")) {
-            //    clearToTransmit = true;
-            // }
-            clearToTransmit = true;
-        }
-        // Transmit only if message the above conditions are valid
-        if (clearToTransmit) {
+        boolean commandSent = false;
+        if ((cmd == null) || (cmd.isEmpty()) || (connection.isClosed() == false)) {
+        } else {
+            // Transmit only if message the above conditions are valid == FALSE
             toServer.println(cmd);
+            commandSent = true;
             System.out.println("[PWRITR-" + connection.hashCode() + "-" + getTimeStamp() + "]: TX:" + cmd);
         }
-        return clearToTransmit;
+        return commandSent;
     }
     
     /**
@@ -106,17 +101,13 @@ public class TCPClient {
     public boolean sendPublicMessage(String message) {
         // Hint: Reuse sendCommand() method
         // Hint: update lastError if you want to store the reason for the error.
-        boolean clearToTransmit = true;
-        if (message == null) {
+        boolean messageSent = false;
+        if ((message == null) || (message.isEmpty()) ) {
             lastError = "Message is null, therefore not sent";
-            clearToTransmit = false;
+            sendCommand("msg " + message);
+            messageSent = true;
         }
-        else if(message.equals("")) {
-            lastError = "Message is empty, therefore not sent";
-            clearToTransmit = false;
-        }
-        if (clearToTransmit) sendCommand("msg " + message);
-        return clearToTransmit;
+        return messageSent;
     }
     
     /**
@@ -126,17 +117,12 @@ public class TCPClient {
      */
     public void tryLogin(String username) {
         // Hint: Reuse sendCommand() method
-        boolean readyToLogon = true;
-        if (username == null) {
-            lastError = "username is null, ignoring";
-            readyToLogon = false;
+        if ((username == null) || (username.isEmpty())) {
+            lastError = "username is null or empty, ignoring";
+        } else {
+            sendCommand("login " + username);
         }
-        else if(username.equals("")) {
-            lastError = "username is empty, ignoring";
-            readyToLogon = false;
-        }
-        if (readyToLogon) sendCommand("login " + username);
-        
+    
     }
     
     /**
@@ -160,24 +146,13 @@ public class TCPClient {
     public boolean sendPrivateMessage(String recipient, String message) {
         // Hint: Reuse sendCommand() method
         // Hint: update lastError if you want to store the reason for the error.
-        boolean clearToSend = true;
-        if (recipient == null) {
-            lastError = "Recipent null, ignoring";
-            clearToSend = false;
+        boolean clearToSend = false;
+        if ((recipient == null) || (recipient.isEmpty()) )  {
+            lastError = "Recipent null or empty, ignoring";
+        } else {
+            sendCommand("privmsg " + recipient + " " + message);
+            clearToSend = true;
         }
-        else if (recipient.equals("")) {
-            lastError = "Recipent empty, ignoring";
-            clearToSend = false;
-        }
-        if (message == null) {
-            lastError = "Message null, ignoring";
-            clearToSend = false;
-        }
-        else if (message.equals("")) {
-            lastError = "Message empty, ignoring";
-            clearToSend = false;
-        }
-        if (clearToSend) sendCommand("privmsg " + recipient + " " + message);
         return clearToSend;
     }
     
@@ -200,7 +175,8 @@ public class TCPClient {
     
     
     /**
-     * Wait for chat server's response
+     * Wait for chat server's response or reset the connection state if the
+     * socket is closed.
      *
      * @return one line of text (one command) received from the server
      */
@@ -212,8 +188,6 @@ public class TCPClient {
             if (serverResponse != null) {
                 System.out.println("[BUFFRD-" + connection.hashCode()+ "-" + getTimeStamp() + "]: " +
                     "RX:" + serverResponse );
-            } else {
-                serverResponse = null;
             }
         } catch (IOException e) {
             // e.printStackTrace();
@@ -276,7 +250,8 @@ public class TCPClient {
                 }
                 System.out.println(".");
                 
-                // Strip the response ready for use in cases
+                // Strip the command word from the response, to be ready for use
+                // in cases
                 String strippedResponse = responseFromServer.substring(
                     responseFromServer.indexOf(" ") +1);
                 
@@ -424,8 +399,10 @@ public class TCPClient {
      * @param text   Message text
      */
     private void onMsgReceived(boolean priv, String sender, String text) {
+        // Replace ASCII-smileys to emojis
+        String converted = replaceToEmoji(text);
         // Create a new message object and notify each listener
-        TextMessage message = new TextMessage(sender,priv,text);
+        TextMessage message = new TextMessage(sender,priv,converted);
         for (ChatListener l : listeners) l.onMessageReceived(message);
     }
     
@@ -463,7 +440,29 @@ public class TCPClient {
      * @return the current time
      */
     private String getTimeStamp() {
-        String time = String.valueOf(LocalTime.now());
-        return time;
+        return String.valueOf(LocalTime.now());
+    }
+    
+    /**
+     *  Replaces supported ASCII-style smiley with emoji
+     * @param input The string to be converted
+     * @return The converted string with emoji
+     */
+    private String replaceToEmoji(String input) {
+        String [][] mapAsciiEmoji = {
+            {":-)", ":blush:"},
+            {":)", ":blush:"},
+            {":-D", ":smile:"},
+            {":D", ":smile:"},
+            {":-(", ":worried:"},
+            {":(", ":worried:"},
+            
+        };
+        String converted = input;
+        for (String[] mapping : mapAsciiEmoji) {
+            converted = converted.replace(mapping[0], mapping[1]);
+        }
+        // Run the external EmojiParser to really convert the mapped values
+        return EmojiParser.parseToUnicode(converted);
     }
 }

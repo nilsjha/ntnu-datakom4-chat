@@ -31,6 +31,10 @@ The completed assignment with the mandatory steps have been _tagged_ with __v1.0
  * The client now supports the UTF-8 charset (incl nordic chars)
  * The /joke command will now work with servers that support this feature.
 
+### v1.1.10 - Code cleanup & emoji support
+ * Small fixes for performance & readability in code
+ * Added support for simple emojis parsing & emojicode flags
+
 ## Screenshots
 ### The client GUI
 ![v1.0.0 client](Images/clientRunning.png)
