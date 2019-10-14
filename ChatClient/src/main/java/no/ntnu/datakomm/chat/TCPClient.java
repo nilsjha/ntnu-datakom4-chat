@@ -181,7 +181,8 @@ public class TCPClient {
     
     
     /**
-     * Wait for chat server's response
+     * Wait for chat server's response or reset the connection state if the
+     * socket is closed.
      *
      * @return one line of text (one command) received from the server
      */
@@ -193,8 +194,6 @@ public class TCPClient {
             if (serverResponse != null) {
                 System.out.println("[BUFFRD-" + connection.hashCode()+ "-" + getTimeStamp() + "]: " +
                     "RX:" + serverResponse );
-            } else {
-                serverResponse = null;
             }
         } catch (IOException e) {
             // e.printStackTrace();
@@ -257,7 +256,8 @@ public class TCPClient {
                 }
                 System.out.println(".");
                 
-                // Strip the response ready for use in cases
+                // Strip the command word from the response, to be ready for use
+                // in cases
                 String strippedResponse = responseFromServer.substring(
                     responseFromServer.indexOf(" ") +1);
                 
