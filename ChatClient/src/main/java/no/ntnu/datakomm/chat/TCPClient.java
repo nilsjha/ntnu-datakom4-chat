@@ -108,17 +108,13 @@ public class TCPClient {
     public boolean sendPublicMessage(String message) {
         // Hint: Reuse sendCommand() method
         // Hint: update lastError if you want to store the reason for the error.
-        boolean clearToTransmit = true;
-        if (message == null) {
+        boolean messageSent = false;
+        if ((message == null) || (message.isEmpty()) ) {
             lastError = "Message is null, therefore not sent";
-            clearToTransmit = false;
+            sendCommand("msg " + message);
+            messageSent = true;
         }
-        else if(message.equals("")) {
-            lastError = "Message is empty, therefore not sent";
-            clearToTransmit = false;
-        }
-        if (clearToTransmit) sendCommand("msg " + message);
-        return clearToTransmit;
+        return messageSent;
     }
     
     /**
@@ -128,17 +124,12 @@ public class TCPClient {
      */
     public void tryLogin(String username) {
         // Hint: Reuse sendCommand() method
-        boolean readyToLogon = true;
-        if (username == null) {
-            lastError = "username is null, ignoring";
-            readyToLogon = false;
+        if ((username == null) || (username.isEmpty())) {
+            lastError = "username is null or empty, ignoring";
+        } else {
+            sendCommand("login " + username);
         }
-        else if(username.equals("")) {
-            lastError = "username is empty, ignoring";
-            readyToLogon = false;
-        }
-        if (readyToLogon) sendCommand("login " + username);
-        
+    
     }
     
     /**
@@ -163,12 +154,8 @@ public class TCPClient {
         // Hint: Reuse sendCommand() method
         // Hint: update lastError if you want to store the reason for the error.
         boolean clearToSend = true;
-        if (recipient == null) {
-            lastError = "Recipent null, ignoring";
-            clearToSend = false;
-        }
-        else if (recipient.equals("")) {
-            lastError = "Recipent empty, ignoring";
+        if ((recipient == null) || (recipient.isEmpty()) )  {
+            lastError = "Recipent null or empty, ignoring";
             clearToSend = false;
         }
         if (message == null) {
