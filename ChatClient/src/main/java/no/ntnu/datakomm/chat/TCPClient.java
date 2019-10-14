@@ -158,14 +158,6 @@ public class TCPClient {
             lastError = "Recipent null or empty, ignoring";
             clearToSend = false;
         }
-        if (message == null) {
-            lastError = "Message null, ignoring";
-            clearToSend = false;
-        }
-        else if (message.equals("")) {
-            lastError = "Message empty, ignoring";
-            clearToSend = false;
-        }
         if (clearToSend) sendCommand("privmsg " + recipient + " " + message);
         return clearToSend;
     }
