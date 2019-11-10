@@ -1,4 +1,5 @@
 [![Build Status](https://ci.gaupne.net/buildStatus/icon?job=ntnu-datakom4-chat)](https://ci.gaupne.net/job/ntnu-datakom4-chat/)
+[![Quality Gate Status](https://sq.gaupne.net/api/project_badges/measure?project=no.ntnu.datakomm%3AChatClient&metric=alert_status)](https://sq.gaupne.net/dashboard?id=no.ntnu.datakomm%3AChatClient)
 # Assignment A4 
 _In this assignment we got the task to implement the TCP connection handling
 for a predefined chat application._
